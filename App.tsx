@@ -19,6 +19,7 @@ import {
   TextInput,
   useColorScheme,
   View,
+  Button,
 } from 'react-native';
 
 import {
@@ -29,6 +30,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -38,6 +40,8 @@ import {
  HomeScreen,
  DetailScreen
 } from './src/pages/screens'
+
+import useAsyncStorage from './src/hooks/useAsyncStorage';
 
 import { StackNavigationModel } from './src/model/StackNavigationModel';
 import { DrawerNavigationModel } from './src/model/DrawerNavigationModel';
@@ -55,37 +59,69 @@ const App = () => {
     flex: 1,
   };
 
-  const RootNavigation = () => {
+  // const setData = async (key: string, value: string|object) => {
+  //   try {
+  //     const jsonValue = JSON.stringify(value);
+  //     await AsyncStorage.setItem(key, jsonValue);
+  //   } catch (error) {
+  //     console.log('## error : ', error);
+  //   } 
+  // }
+
+  // const getData = async (key: string, value: string) => {
+  //   try {
+  //     const jsonValue = await AsyncStorage.getItem(key);
+  //     return jsonValue != null ? JSON.parse(jsonValue) : null;
+  //   } catch (error) {
+  //     console.log('## error : ', error);
+  //   }
+  // }
+
+  // const [result, setAsyncStorageValue] = useAsyncStorage({
+  //   type: '',
+  //   key: '',
+  //   value: ''
+  // });
+
+  // let param = {
+  //   type: 'SET',
+  //   key: 'testKey',
+  //   value: 'testValue'
+  // }
+  // setAsyncStorageValue(param);
+  // setAsyncStorageValue({
+  //   type: 'GET',
+  //   key: 'testKey',
+  //   value: 'testValue'
+  // })
+  // console.log('## result : ' , result);
+
+
+  const RootNavigation: React.FC = () => {
    return (
-     <Stack.Navigator screenOptions={{}}>
-       <Stack.Screen name="Root" component={HomeScreen} />
-       <Stack.Screen name="Detail" component={DetailScreen} />
-     </Stack.Navigator> 
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name="Root" component={HomeScreen} />
+      <Stack.Screen name="Detail" component={DetailScreen} />
+    </Stack.Navigator> 
    )
   }
 
- //  const LoginNavigation = () => {
- //    return (
- //      <Stack.Navigator>
- //        <Stack.Screen />
- //        <Stack.Screen />
- //      </Stack.Navigator>
- //    )
- //  }
-
   const CustomSideBar = (props: any) => {
     return (
-     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-       <Text>asdf</Text>
-     </View>
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <Button 
+          title="Menu1" 
+          onPress={() => console.log('test1')}
+        />
+        <Button 
+          title="Menu2" 
+          onPress={() => console.log('test2')}
+        />
+      </View>
     )
   }
 
   return (
-   //  <SafeAreaView style={backgroundStyle}>
-   //    <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-   //    <HomeScreen />
-   //  </SafeAreaView>
    <NavigationContainer>
      <Drawer.Navigator 
        initialRouteName="Root"
@@ -98,7 +134,11 @@ const App = () => {
          :
            <Drawer.Screen name="Login" component={} />
        } */}
-       <Drawer.Screen name="Root" component={RootNavigation} />
+       <Drawer.Screen 
+        name="Root" 
+        component={RootNavigation} 
+        options={{gestureEnabled: false}}
+      />
      </Drawer.Navigator>
    </NavigationContainer>
   );
